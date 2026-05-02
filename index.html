@@ -1,0 +1,1649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elite Portfolio</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:linear-gradient(-45deg,#0b0f1a,#0f1629,#111a3a,#0b0f1a);
+    background-size:400% 400%;
+    animation:gradientMove 12s ease infinite;
+    color:#e6ecff;
+    display:flex;
+}
+
+@keyframes gradientMove{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+@keyframes homeEntry{
+    0%{
+        opacity:0;
+        transform:translateY(30px) scale(0.98);
+        filter:blur(6px);
+    }
+    100%{
+        opacity:1;
+        transform:translateY(0) scale(1);
+        filter:blur(0);
+    }
+}
+html{
+    scroll-behavior:smooth;
+}
+
+/* SIDEBAR */
+.sidebar{
+    width:260px;
+    height:100vh;
+    backdrop-filter:blur(15px);
+    background:rgba(255,255,255,0.03);
+    padding:30px;
+    position:fixed;
+
+    overflow-y:auto;   /* ✅ ADD THIS */
+    scrollbar-width: thin; /* optional */
+}
+.sidebar::-webkit-scrollbar{
+    width:6px;
+}
+.sidebar::-webkit-scrollbar-thumb{
+    background:rgba(122,162,255,0.5);
+    border-radius:10px;
+}
+
+.nav a{
+    display:block;
+    padding:12px 14px;
+    margin-bottom:10px;
+    color:#cfd8ff;
+    border-radius:10px;
+    cursor:pointer;
+    text-decoration:none;
+    position:relative;
+    transition:all 0.3s ease;
+}
+.nav-group{
+    margin-bottom: 10px;
+}
+
+.submenu{
+    margin-left: 15px;
+    display: none;
+    flex-direction: column;
+}
+
+.submenu a{
+    font-size: 14px;
+    padding: 8px 12px;
+    opacity: 0.85;
+}
+
+.submenu a:hover{
+    opacity: 1;
+}
+
+/* show submenu */
+.nav-group.active .submenu{
+    display: flex;
+}
+/* HOVER (what you wanted) */
+.nav a:hover{
+    background:rgba(122,162,255,0.15);
+    color:#ffffff;
+    transform:translateX(6px);
+    box-shadow:0 0 12px rgba(122,162,255,0.25);
+}
+
+/* ACTIVE (selected section) */
+.nav a.active{
+    background:rgba(122,162,255,0.25);
+    color:#ffffff;
+    transform:translateX(6px);
+}
+
+/* LEFT INDICATOR LINE */
+.nav a::before{
+    content:'';
+    position:absolute;
+    left:0;
+    top:50%;
+    transform:translateY(-50%);
+    width:4px;
+    height:0%;
+    background:#7aa2ff;
+    border-radius:4px;
+    transition:0.3s;
+    cursor:pointer;
+}
+
+/* hover effect */
+.nav a:hover{
+    background:rgba(122,162,255,0.15);
+    transform:translateX(6px);
+}
+
+/* click press */
+.nav a:active{
+    transform:translateX(8px) scale(0.98);
+}
+
+/* selected state */
+.nav a.active{
+    background:rgba(122,162,255,0.25);
+    transform:translateX(6px);
+}
+
+/* left indicator */
+.nav a:hover::before,
+.nav a.active::before{
+    height:70%;
+}
+/* MAIN */
+.main{
+    margin-left:260px;
+    padding:40px;
+    width:100%;
+    position:relative;
+    min-height:100vh;
+    overflow-y:auto;   /* IMPORTANT */
+}
+
+/* SECTION */
+.section{
+    position:absolute;
+    width:100%;
+    min-height:100vh;
+    top:0;
+    left:0;
+
+    opacity:0;
+    transform:translateY(30px);
+
+    transition:0.5s;
+
+    pointer-events:none;
+    visibility:hidden;
+    overflow-y:auto;   /* IMPORTANT */
+}
+
+.micro-gallery,
+.video-wrapper{
+    width:100%;
+}
+
+.section.active{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+    visibility:visible;   /* ADD THIS */
+    z-index:1;            /* ADD THIS */
+}
+
+/* HERO */
+.hero{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    height:100%;
+    text-align:center;
+}
+
+.hero img{
+    width:180px;   /* increased from 150 */
+    height:180px;
+    border-radius:50%;
+    border:3px solid rgba(122,162,255,0.9);
+    margin-bottom:20px;
+    object-fit:cover;
+
+    box-shadow:
+        0 0 30px rgba(122,162,255,0.5),
+        0 0 80px rgba(122,162,255,0.25);
+
+    transition:all 0.4s ease;
+    cursor:pointer;
+}
+
+/* hover glow upgrade */
+.hero img:hover{
+    transform:scale(1.08);
+    box-shadow:
+        0 0 45px rgba(122,162,255,0.7),
+        0 0 100px rgba(122,162,255,0.4);
+}
+
+/* click press effect */
+.hero img:active{
+    transform:scale(0.95);
+}
+
+/* soft glowing animation */
+@keyframes glowPulse{
+    0%{
+        box-shadow:
+            0 0 25px rgba(122,162,255,0.4),
+            0 0 60px rgba(122,162,255,0.2);
+    }
+    50%{
+        box-shadow:
+            0 0 40px rgba(122,162,255,0.7),
+            0 0 90px rgba(122,162,255,0.4);
+    }
+    100%{
+        box-shadow:
+            0 0 25px rgba(122,162,255,0.4),
+            0 0 60px rgba(122,162,255,0.2);
+    }
+}
+
+.hero img{
+    animation:glowPulse 3s infinite;
+}
+/* CARD */
+.card{
+    background:rgba(255,255,255,0.05);
+    padding:20px;
+    border-radius:12px;
+    margin-bottom:20px;
+}
+
+/* HEADINGS */
+h2{
+    margin-bottom:15px;
+}
+h3{
+    margin-bottom:10px;
+}
+/* ===== HOME PAGE UPGRADE ===== */
+.home-banner h1{
+    font-family:'Playfair Display',serif;
+    font-size:42px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+}
+.home-banner{
+font-family:'Playfair Display',serif;
+letter-spacing:1px;
+text-shadow:0 2px 10px rgba(0,0,0,0.5);
+    width:100%;
+    padding:40px;
+    text-align:center;
+    font-size:32px;
+    font-weight:700;
+    color:#ffffff;
+    background:linear-gradient(to right, rgba(0,0,0,0.6), rgba(0,0,0,0.2)),
+               url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f');
+    background-size:cover;
+    background-position:center;
+    border-radius:12px;
+    margin-bottom:30px;
+}
+
+.home-title{
+    text-align:center;
+    margin-bottom:20px;
+    font-size:20px;
+}
+
+/* MAIN CARD */
+.home-container{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:50px;
+    padding:40px;
+
+    background:rgba(255,255,255,0.06);
+    backdrop-filter:blur(18px);
+    border-radius:18px;
+
+    box-shadow:
+        0 10px 40px rgba(0,0,0,0.4),
+        inset 0 0 20px rgba(255,255,255,0.05);
+
+    flex-wrap:wrap;
+    transition:0.4s;
+}
+.home-container{
+    animation:homeEntry 0.7s ease;
+}
+.home-container:hover{
+    transform:translateY(-6px) scale(1.01);
+    box-shadow:
+        0 20px 60px rgba(0,0,0,0.6),
+        0 0 25px rgba(122,162,255,0.3);
+}
+/* IMAGE */
+.home-img img{
+    width:240px;
+    height:300px;
+    object-fit:cover;
+    border-radius:12px;
+
+    box-shadow:
+        0 0 25px rgba(122,162,255,0.4),
+        0 0 60px rgba(122,162,255,0.2);
+
+    transition:0.4s;
+}
+
+.home-img img:hover{
+    transform:scale(1.05);
+}
+
+/* DETAILS */
+.home-details{
+    font-size:18px;
+    line-height:2.3;
+}
+/* RED NUMBER STYLE */
+.home-details span{
+    color:#ff4d4d;
+    font-weight:700;
+    margin-right:10px;
+    font-size:18px;
+}
+
+/* TEXT STYLE */
+.home-details p{
+    color:#e6ecff;
+    font-family:'Poppins',sans-serif;
+    letter-spacing:0.5px;
+}
+.highlight-name{
+    font-family:'Playfair Display',serif;
+    font-size:20px;
+    color:#ffffff;
+    letter-spacing:1px;
+    text-shadow:0 0 10px rgba(122,162,255,0.6);
+}
+/* RESPONSIVE */
+@media(max-width:768px){
+    .home-container{
+        flex-direction:column;
+        text-align:center;
+    }
+}
+/* GALLERY */
+.gallery{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+    gap:15px;
+}
+.gallery img{
+    width:100%;
+    cursor:pointer;
+}
+
+/* LIGHTBOX */
+.lightbox{
+    position:fixed;
+    inset:0;
+    display:none;
+    background:rgba(0,0,0,0.95);
+
+    justify-content:center;
+    align-items:center;
+
+    z-index:99999; /* increase more */
+}
+
+
+.lightbox img{
+    max-width:90%;
+    max-height:90%;
+    border-radius:10px;
+    z-index:10000;
+}
+
+/* ===== COMMON PAGE BANNER ===== */
+.page-banner{
+    width:100%;
+    padding:60px 20px;
+    text-align:center;
+    font-family:'Playfair Display',serif;
+    font-size:38px;
+    font-weight:700;
+    color:#ffffff;
+
+    background:linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.4)),
+               url('https://images.unsplash.com/photo-1523240795612-9a054b0db644');
+
+    background-size:cover;
+    background-position:center;
+
+    border-radius:12px;
+    margin-bottom:25px;
+
+    letter-spacing:2px;
+    text-transform:uppercase;
+
+    box-shadow:0 10px 30px rgba(0,0,0,0.5);
+}
+
+/* optional hover glow */
+.page-banner:hover{
+    box-shadow:0 0 30px rgba(122,162,255,0.4);
+    transition:0.3s;
+}
+/* RESPONSIVE */
+@media(max-width:768px){
+    .about-grid{
+        grid-template-columns:1fr;
+    }
+}
+/* ===== ABOUT SECTION UPGRADE ===== */
+.about-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:25px;
+    margin-top:10px;
+}
+.about-box::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    border-radius:16px;
+    padding:1px;
+    background:linear-gradient(120deg,#7aa2ff,transparent);
+    -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;
+    mask-composite:exclude;
+}
+@keyframes aboutEntry{
+    0%{
+        opacity:0;
+        transform:translateY(40px);
+    }
+    100%{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+#about.active .about-full{
+    animation:aboutEntry 0.6s ease;
+}
+
+#about.active .about-box{
+    animation:aboutEntry 0.8s ease;
+}
+.about-heading{
+    font-family:'Playfair Display',serif;
+    font-size:36px;
+    text-align:center;
+    margin-bottom:25px;
+    letter-spacing:2px;
+    position:relative;
+    display:inline-block;
+    left:50%;
+    transform:translateX(-50%);
+    color:#ffffff;
+
+    text-shadow:
+        0 0 10px rgba(122,162,255,0.6),
+        0 0 20px rgba(122,162,255,0.3);
+}
+.about-heading::after{
+    content:'';
+    position:absolute;
+    left:50%;
+    bottom:-8px;
+    width:60%;
+    height:3px;
+    background:linear-gradient(90deg,#7aa2ff,transparent);
+    transform:translateX(-50%);
+    border-radius:5px;
+
+    animation:underlineGlow 2s infinite alternate;
+}
+
+@keyframes underlineGlow{
+    from{
+        width:40%;
+        opacity:0.6;
+    }
+    to{
+        width:80%;
+        opacity:1;
+    }
+}
+
+/* FULL WIDTH CARD */
+.about-full{
+    text-align:center;
+    padding:30px;
+    font-size:17px;
+    line-height:1.8;
+    background:rgba(255,255,255,0.06);
+    backdrop-filter:blur(10px);
+    border-radius:16px;
+    margin-bottom:25px;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.4),
+        inset 0 0 10px rgba(255,255,255,0.05);
+}
+
+
+/* GRID FOR VISION + GOAL */
+
+
+/* SMALL CARDS */
+.about-box{
+    padding:25px;
+    text-align:center;
+    border-radius:16px;
+    transition:0.3s;
+
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(10px);
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,0.3);
+}
+
+.about-box h3{
+    font-family:'Playfair Display',serif;
+    margin-bottom:10px;
+}
+
+/* HOVER EFFECT */
+.about-box:hover{
+    transform:translateY(-5px) scale(1.02);
+    box-shadow:
+        0 15px 40px rgba(0,0,0,0.5),
+        0 0 20px rgba(122,162,255,0.3);
+}
+
+/* MOBILE */
+@media(max-width:768px){
+    .about-grid{
+        grid-template-columns:1fr;
+    }
+}
+.reveal{
+    opacity:0;
+    transform:translateY(40px);
+    transition:0.6s ease;
+}
+
+.reveal.active{
+    opacity:1;
+    transform:translateY(0);
+}
+.about-box h3{
+    font-size:20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+}
+
+.about-box h3::before{
+    font-size:22px;
+}
+
+.about-box{
+    position:relative;
+    overflow:hidden;
+}
+
+.about-box::after{
+    content:'';
+    position:absolute;
+    top:0;
+    left:-100%;
+    width:100%;
+    height:100%;
+    background:linear-gradient(120deg, transparent, rgba(122,162,255,0.25), transparent);
+    transition:0.6s;
+}
+
+.about-box:hover::after{
+    left:100%;
+}
+
+.academic-card{
+    text-align:center;
+    padding:40px;
+    border-radius:18px;
+
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(12px);
+
+    box-shadow:
+        0 10px 40px rgba(0,0,0,0.5),
+        inset 0 0 10px rgba(255,255,255,0.05);
+
+    transition:0.4s;
+}
+
+.academic-card:hover{
+    transform:translateY(-8px) scale(1.02);
+    box-shadow:
+        0 20px 60px rgba(0,0,0,0.6),
+        0 0 25px rgba(122,162,255,0.3);
+}
+
+/* TEXT */
+.academic-card p{
+    margin:20px 0;
+    color:#dbe3ff;
+    line-height:1.8;
+}
+.academic-subtitle{
+    text-align: center;
+    max-width: 750px;
+    margin: 0 auto 35px auto;
+
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    line-height: 1.8;
+
+    color: rgba(230,236,255,0.85);
+
+    /* Apple-style soft glow */
+    text-shadow:
+        0 0 10px rgba(122,162,255,0.25),
+        0 0 25px rgba(122,162,255,0.15);
+
+    opacity: 0;
+    transform: translateY(10px);
+
+    animation: subtitleFade 1.2s ease forwards;
+}
+
+/* smooth keynote entrance */
+@keyframes subtitleFade{
+    to{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.pdf-card-wrapper{
+    width: 300px;
+    margin: 30px auto;
+    border-radius: 14px;
+    overflow: hidden;
+
+    background: rgba(255,255,255,0.04);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+
+    position: relative;
+}
+
+/* REAL PDF PAGE */
+#pdfCanvas{
+    width: 100%;
+    display: block;
+    background: white;
+}
+
+/* BOTTOM BAR LIKE MOBILE FILE PREVIEW */
+.pdf-meta{
+    padding: 10px 12px;
+    background: rgba(0,0,0,0.4);
+    color: white;
+}
+
+.pdf-name{
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.pdf-sub{
+    font-size: 11px;
+    opacity: 0.7;
+}
+
+/* FULL CLICK AREA */
+.pdf-click{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+}
+
+.section.active canvas {
+    background: white;
+    display: block;
+}
+.pdf-card-wrapper {
+    background: white;
+}
+.micro-gallery-title{
+    text-align:center;
+}
+.micro-video-card{
+    text-align:center;
+}
+
+.video-wrapper{
+    margin-top:15px;
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:0 15px 40px rgba(0,0,0,0.5);
+}
+
+.video-wrapper video{
+    width:100%;
+    max-height:400px;
+    display:block;
+}
+
+.micro-gallery{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:10px;
+    margin-top:15px;
+}
+
+.micro-gallery img{
+    width:100%;
+    max-width:180px;   /* 👈 controls overall size */
+    aspect-ratio:1/1;  /* square */
+    object-fit:cover;
+    border-radius:10px;
+    margin:0 auto;     /* centers inside grid cell */
+    display:block;
+}
+
+.micro-gallery img:hover{
+    transform:scale(1.05);
+    box-shadow:0 15px 35px rgba(122,162,255,0.3);
+}
+.academic-wrapper{
+    max-width:1000px;
+    margin:auto;
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+.micro-video-card video,
+.micro-gallery img{
+    display:block;
+    opacity:1 !important;
+    visibility:visible !important;
+}
+
+.pdf-grid{
+    margin-top:20px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:15px;
+}
+
+/* PREMIUM PDF CARD BUTTON */
+.pdf-card{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:15px;
+    border-radius:12px;
+
+    text-decoration:none;
+    color:#e6ecff;
+    font-weight:600;
+
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(12px);
+
+    border:1px solid rgba(122,162,255,0.2);
+
+    box-shadow:0 10px 25px rgba(0,0,0,0.3);
+
+    transition:0.25s ease;
+
+    position:relative;
+    overflow:hidden;
+}
+
+/* HOVER LIFT + GLOW */
+.pdf-card:hover{
+    transform:translateY(-6px) scale(1.04);
+    box-shadow:
+        0 15px 40px rgba(122,162,255,0.35),
+        0 0 20px rgba(122,162,255,0.25);
+    color:#ffffff;
+}
+
+/* LIGHT SWEEP EFFECT */
+.pdf-card::after{
+    content:'';
+    position:absolute;
+    top:0;
+    left:-100%;
+    width:100%;
+    height:100%;
+    background:linear-gradient(120deg,transparent,rgba(122,162,255,0.25),transparent);
+    transition:0.5s;
+}
+
+.pdf-card:hover::after{
+    left:100%;
+}
+
+/* CLICK FEEL */
+.pdf-card:active{
+    transform:scale(0.96);
+}
+
+/* COURSE HEADER */
+.course-header{
+    text-align:center;
+}
+
+/* ===== GALLERY GRID ===== */
+
+.gallery-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:15px;
+    margin-top:20px;
+}
+
+/* IMAGE STYLE */
+.gallery-grid img{
+    width:100%;
+    height:180px;
+    object-fit:cover;
+
+    border-radius:14px;
+
+    cursor:pointer;
+
+    transition:0.4s ease;
+
+    box-shadow:0 8px 20px rgba(0,0,0,0.4);
+}
+
+/* HOVER EFFECT */
+.gallery-grid img:hover{
+    transform:scale(1.06);
+    box-shadow:
+        0 0 25px rgba(122,162,255,0.4),
+        0 15px 40px rgba(0,0,0,0.6);
+    filter:brightness(1.1);
+}
+/* CONTACT CARD */
+.contact-card{
+    text-align:center;
+    padding:30px;
+    border-radius:16px;
+
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(12px);
+
+    box-shadow:0 10px 40px rgba(0,0,0,0.5);
+}
+
+/* INFO TEXT */
+.contact-info p{
+    margin:12px 0;
+    font-size:16px;
+}
+
+
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <h2>Portfolio</h2>
+  <div class="nav">
+
+    <a href="#" onclick="showSection('home', this); return false;" class="active">
+        Home
+    </a>
+
+    <a href="#" onclick="showSection('about', this); return false;">
+        About Me
+    </a>
+
+    <a href="#" onclick="showSection('academics', this); return false;">
+        Academic Records
+    </a>
+
+    <!-- TEACHING GROUP -->
+    <div class="nav-group">
+
+        <a href="#" onclick="toggleSubmenu(event, this); return false;">
+            Teaching Practice ▾
+        </a>
+
+        <div class="submenu">
+
+            <a href="#" onclick="showSection('lessonplan', this); return false;">
+                Lesson Plan
+            </a>
+
+            <a href="#" onclick="showSection('microteaching', this); return false;">
+                Microteaching
+            </a>
+
+        </div>
+    </div>
+
+    <div class="nav-group">
+
+    <a href="#" onclick="toggleSubmenu(event, this); return false;">
+        EPC Activities ▾
+    </a>
+
+    <div class="submenu">
+
+        <a href="#" onclick="showSection('ict', this); return false;">
+            ICT
+        </a>
+
+        <a href="#" onclick="showSection('reading', this); return false;">
+            Reading Reflection
+        </a>
+
+    </div>
+</div>
+
+   <div class="nav-group">
+
+    <a href="#" onclick="toggleSubmenu(event, this); return false;">
+        Reflection ▾
+    </a>
+
+    <div class="submenu">
+
+        <a href="#" onclick="showSection('coursecode', this); return false;">
+            Course Code
+        </a>
+
+    </div>
+
+</div>
+    <a href="#" onclick="showSection('gallery', this); return false;">
+        Gallery
+    </a>
+
+    <a href="#" onclick="showSection('contact', this); return false;">
+        Contact
+    </a>
+
+</div>
+</div>
+
+<div class="main">
+
+<!-- HOME -->
+<div id="home" class="section active">
+
+    <!-- HERO BANNER -->
+    <div class="home-banner">
+       <h1 id="homeTyping"></h1>
+    </div>
+
+    
+    <!-- CONTENT BOX -->
+    <div class="home-container">
+
+        <!-- IMAGE -->
+        <div class="home-img">
+            <img src="profile.jpg" onclick="imageClickEffect(this)">
+        </div>
+
+        <!-- DETAILS -->
+        <div class="home-details">
+            <p><span>1.</span> B.Ed. Semester I</p>
+            <p><span>2.</span> Name: <strong class="highlight-name">Pratiksha Sharad Pawar</strong></p>
+            <p><span>3.</span> Roll No.: 65</p>
+            <p><span>4.</span> College: Dhareshwar B.Ed College</p>
+            <p><span>5.</span> Academic Year: 2025-26</p>
+            <p><span>6.</span> Guide: Mr. Surendra M. Magar</p>
+        </div>
+
+    </div>
+
+</div>
+<!-- ABOUT -->
+<!-- ABOUT -->
+<div id="about" class="section">
+    
+   <div class="page-banner">
+    <span id="aboutTyping"></span>
+</div>
+
+    <!-- FULL WIDTH ABOUT -->
+    <div class="card about-full">
+        <h3>माझ्याबद्दल(About Me)</h3>
+        <p>
+            मी एक उत्साही, समर्पित आणि विद्यार्थीकेंद्रित दृष्टिकोन असलेली भविष्यातील शिक्षक आहे. शिक्षण हे केवळ ज्ञान देण्याचे माध्यम नसून विद्यार्थ्यांच्या विचारशक्ती, सर्जनशीलता आणि व्यक्तिमत्त्व विकासासाठी एक प्रभावी साधन आहे, असा माझा ठाम विश्वास आहे.
+
+ प्रत्येक विद्यार्थ्यामध्ये काहीतरी विशेष असते, आणि त्या विशेषतेचा विकास करण्यासाठी सकारात्मक, समजूतदार आणि प्रेरणादायी वातावरण निर्माण करणे हे माझे कर्तव्य मानते.
+ नवीन अध्यापन पद्धती शिकणे, प्रयोग करणे आणि त्यातून स्वतःचा व विद्यार्थ्यांचा विकास साधणे हा माझा सातत्याने प्रयत्न असतो.
+        </p>
+    </div>
+
+    <!-- VISION + GOAL SIDE BY SIDE -->
+    <div class="about-grid">
+
+        <div class="card about-box">
+           <h3>🌟 दृष्टी (Vision)</h3>
+            <p>
+        माझी दृष्टी अशी आहे की शिक्षण प्रणाली विद्यार्थ्यांच्या सर्वांगीण विकासाला चालना देणारी असावी. 
+
+विद्यार्थी केवळ परीक्षेत यशस्वी होणारे नसून, समाजासाठी जबाबदार, संवेदनशील आणि नैतिक मूल्ये जपणारे नागरिक बनावेत, हीच माझी खरी दृष्टी आहे
+            </p>
+        </div>
+
+        <div class="card about-box">
+           <h3>🎯 ध्येय (Goal)</h3>
+
+            <p>
+                माझे ध्येय एक कुशल, सर्जनशील आणि प्रेरणादायी शिक्षक बनण्याचे आहे. विद्यार्थ्यांमध्ये जिज्ञासा निर्माण करणे, त्यांना स्वयंपूर्ण बनवणे आणि त्यांच्या क्षमतांचा पूर्ण विकास घडवून आणणे हे माझे प्रमुख उद्दिष्ट आहे.
+
+            </p>
+        </div>
+
+    </div>
+
+</div>
+<!-- ACADEMICS -->
+<div id="academics" class="section">
+
+    <!--<h2 class="about-heading">Academic Records</h2> -->
+<div class="page-banner">
+    <span id="academicTyping"></span>
+</div>
+    <div class="academic-wrapper">
+
+        <p class="academic-subtitle">
+“This section presents my academic certifications from SSC to Graduation, reflecting my consistent educational journey and growth.”
+
+</p>
+
+        <!-- PDF CARD -->
+<div class="pdf-card-wrapper">
+
+    <canvas id="pdfCanvas"></canvas>
+
+    <div class="pdf-meta">
+        <div class="pdf-name">Academic Certificates.pdf</div>
+        <div class="pdf-sub">Tap to open</div>
+    </div>
+
+    <a href="academic-records.pdf" target="_blank" class="pdf-click"></a>
+
+</div>
+    </div>
+
+</div>
+<!-- TEACHING (PARENT SECTION ONLY) -->
+<div id="teaching" class="section">
+
+    <div class="page-banner">
+        <span id="teachingTyping"></span>
+    </div>
+
+    <div class="card">
+        <h3>Teaching Practice</h3>
+        <p>Select a module from sidebar</p>
+    </div>
+
+</div>
+<!-- LESSON PLAN SECTION -->
+<div id="lessonplan" class="section">
+
+    <div class="page-banner">
+    <span id="lessonTyping"></span>
+</div>
+
+    <div class="academic-wrapper">
+
+        <p class="academic-subtitle">
+            This section presents my detailed lesson plan for classroom teaching practice.
+        </p>
+
+        <!-- PDF PREVIEW -->
+        <div class="pdf-card-wrapper">
+
+            <canvas id="lessonPlanCanvas"></canvas>
+
+            <div class="pdf-meta">
+                <div class="pdf-name">Lesson Plan.pdf</div>
+                <div class="pdf-sub">Tap to open</div>
+            </div>
+
+            <a href="lesson-plan.pdf" target="_blank" class="pdf-click"></a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- MICROTEACHING SECTION -->
+<div id="microteaching" class="section">
+
+    <div class="page-banner">
+    <span id="microTyping"></span>
+</div>
+    <div class="academic-wrapper">
+
+        <p class="academic-subtitle">
+            This section showcases my microteaching sessions through recorded videos and classroom photographs.
+        </p>
+
+        <!-- VIDEO SECTION -->
+        <div class="card micro-video-card">
+
+            <h3>🎬 Teaching Demonstration</h3>
+
+            <div class="video-wrapper">
+                <video controls>
+                    <source src="microteaching-video.mp4" type="video/mp4">
+                </video>
+            </div>
+
+        </div>
+
+        <!-- PHOTO GALLERY -->
+        <div class="card">
+<h3 class="micro-gallery-title">📸 Teaching Moments</h3>
+
+            <div class="micro-gallery">
+
+                <img src="photo1.jpeg" onclick="openLightbox(this.src)">
+                <img src="photo2.jpeg" onclick="openLightbox(this.src)">
+                <img src="photo3.jpeg" onclick="openLightbox(this.src)">
+                <img src="photo4.jpeg" onclick="openLightbox(this.src)">
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<!-- EPC PARENT -->
+<div id="epc" class="section">
+
+    <div class="page-banner">
+        <span id="epcTyping"></span>
+    </div>
+
+    <div class="card">
+        <h3>EPC Overview</h3>
+        <p>Select a sub-section from sidebar</p>
+    </div>
+
+</div>
+
+<!-- ICT -->
+<div id="ict" class="section">
+    <div class="page-banner">
+    <span id="ictTyping"></span>
+</div>
+    <div class="academic-wrapper">
+
+        <p class="academic-subtitle">
+            This section presents my ICT-based teaching approach using digital tools and modern methods.
+        </p>
+
+        <div class="pdf-card-wrapper">
+
+            <canvas id="ictCanvas"></canvas>
+
+            <div class="pdf-meta">
+                <div class="pdf-name">ICT Document.pdf</div>
+                <div class="pdf-sub">Tap to open</div>
+            </div>
+
+            <a href="ict-document.pdf" target="_blank" class="pdf-click"></a>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- READING -->
+<div id="reading" class="section">
+    <div class="page-banner">
+    <span id="readingTyping"></span>
+</div>
+
+    <div class="academic-wrapper">
+
+        <p class="academic-subtitle">
+            This section presents my reading reflection and understanding of different reading strategies in teaching-learning.
+        </p>
+
+        <div class="pdf-card-wrapper">
+
+            <canvas id="readingCanvas"></canvas>
+
+            <div class="pdf-meta">
+                <div class="pdf-name">Reading Reflection.pdf</div>
+                <div class="pdf-sub">Tap to open</div>
+            </div>
+
+            <a href="reading-reflection.pdf" target="_blank" class="pdf-click"></a>
+
+        </div>
+
+    </div>
+</div>
+  
+
+<!-- REFLECTION (PARENT) -->
+<div id="reflection" class="section">
+
+    <div class="page-banner">
+        Reflection
+    </div>
+
+    <div class="card">
+        <h3>Reflection Overview</h3>
+        <p>Select a subsection from sidebar</p>
+    </div>
+
+</div>
+
+<!-- COURSE CODE SECTION -->
+<div id="coursecode" class="section">
+
+    <div class="page-banner">
+    <span id="courseTyping"></span>
+</div>
+
+    <div class="academic-wrapper">
+        <!-- PDF GRID -->
+        <div class="pdf-grid">
+
+            <a href="pdf1.pdf" target="_blank" class="pdf-card">📄 Bed 101</a>
+            <a href="pdf2.pdf" target="_blank" class="pdf-card">📄 Bed 102</a>
+            <a href="pdf3.pdf" target="_blank" class="pdf-card">📄 Bed 103-A</a>
+            <a href="pdf4.pdf" target="_blank" class="pdf-card">📄 Bed 103-B</a>
+            <a href="pdf5.pdf" target="_blank" class="pdf-card">📄 Bed 104</a>
+            <a href="pdf6.pdf" target="_blank" class="pdf-card">📄 Bed 105-B</a>
+            <a href="pdf7.pdf" target="_blank" class="pdf-card">📄 Bed 106</a>
+            <a href="pdf10.pdf" target="_blank" class="pdf-card">📄 Bed 106-A</a>
+            <a href="pdf8.pdf" target="_blank" class="pdf-card">📄 Bed 107-B</a>
+            <a href="pdf9.pdf" target="_blank" class="pdf-card">📄 Bed 108-A</a>
+        </div>
+
+    </div>
+
+</div>
+<!-- GALLERY -->
+<div id="gallery" class="section">
+
+    <!-- BANNER -->
+    <div class="page-banner">
+        <span id="galleryTyping"></span>
+    </div>
+
+    <!-- SUBTITLE -->
+    <p class="academic-subtitle">
+        A visual showcase of my teaching journey, classroom engagement, and learning experiences.
+    </p>
+
+    <!-- GRID -->
+    <div class="gallery-grid">
+
+        <img src="photo11.jpeg" onclick="openLightbox(this.src)">
+        <img src="photo10.jpeg" onclick="openLightbox(this.src)">
+        <img src="photo9.jpeg" onclick="openLightbox(this.src)">
+        <img src="photo8.jpeg" onclick="openLightbox(this.src)">
+        <img src="photo7.jpeg" onclick="openLightbox(this.src)">
+        <img src="photo6.jpeg" onclick="openLightbox(this.src)">
+        <img src="photo5.jpeg" onclick="openLightbox(this.src)">
+        <img src="photo4.jpeg" onclick="openLightbox(this.src)">
+        <img src="photo3.jpeg" onclick="openLightbox(this.src)">
+        <img src="photo2.jpeg" onclick="openLightbox(this.src)">
+        <img src="photo1.jpeg" onclick="openLightbox(this.src)">
+    </div>
+
+</div>
+
+<!-- CONTACT -->
+<div id="contact" class="section">
+
+    <div class="page-banner">
+        <span id="contactTyping"></span>
+    </div>
+
+    <div class="academic-wrapper">
+
+        <p class="academic-subtitle">
+            Feel free to connect with me for academic discussions, collaborations, or teaching opportunities.
+        </p>
+
+        <div class="card contact-card">
+
+            <h3>📬 Get in Touch</h3>
+
+            <div class="contact-info">
+                <p>📧 <strong>Email:</strong>pratikshayadav18598@gmail.com</p>
+                <p>📱 <strong>Phone:</strong> +91 93255 19818</p>
+                <p>📍 <strong>Location:</strong> Pune, Maharashtra</p>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <img id="lightbox-img">
+</div>
+
+<script>
+function showSection(id, el){
+
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+
+    const next = document.getElementById(id);
+    next.classList.add('active');
+    next.scrollTop = 0;
+
+    document.querySelectorAll('.nav a').forEach(link=>{
+        link.classList.remove('active');
+    });
+
+    el.classList.add('active');
+
+    if(id === 'home'){
+        startTyping("homeTyping", "My E-Portfolio");
+    }
+
+    if(id === 'about'){
+        startTyping("aboutTyping", "About Me");
+    }
+if(id === 'lessonplan'){
+    startTyping("lessonTyping", "Lesson Plan");
+}
+
+if(id === 'microteaching'){
+    startTyping("microTyping", "Microteaching");
+}
+
+if(id === 'ict'){
+    startTyping("ictTyping", "ICT");
+}
+if(id === 'coursecode'){
+    startTyping("courseTyping", "Course Code");
+}
+
+if(id === 'contact'){
+    startTyping("contactTyping", "Contact Me");
+}
+
+if(id === 'reading'){
+    startTyping("readingTyping", "Reading Reflection");
+}
+    if(id === 'academics'){
+    startTyping("academicTyping", "Academic Records");
+
+    setTimeout(() => {
+        renderPDFThumbnail();
+    }, 500);
+}
+
+    if(id === 'teaching'){
+        startTyping("teachingTyping", "Teaching Practice");
+    }
+if(id === 'gallery'){
+    startTyping("galleryTyping", "Teaching Gallery");
+}
+if(id === 'lessonplan'){
+    setTimeout(() => {
+        renderLessonPlanPDF();
+    }, 400);
+}
+    if(id === 'epc'){
+        startTyping("epcTyping", "EPC Activities");
+    }
+if(id === 'ict'){
+    setTimeout(() => {
+        renderICTPDF();
+    }, 400);
+}
+if(id === 'reading'){
+    setTimeout(() => {
+        renderReadingPDF();
+    }, 400);
+}
+    const homeBox = document.querySelector('.home-container');
+    if(homeBox){
+        homeBox.style.animation = 'none';
+
+        setTimeout(()=>{
+            homeBox.style.animation = 'homeEntry 0.7s ease';
+        },10);
+    }
+}
+/* LIGHTBOX */
+function openLightbox(src){
+    const lb = document.getElementById('lightbox');
+    const img = document.getElementById('lightbox-img');
+
+    img.src = src;
+    lb.style.display = 'flex';
+    document.body.style.overflow = 'hidden'; // lock scroll
+}
+
+function closeLightbox(){
+    document.getElementById('lightbox').style.display='none';
+    document.body.style.overflow = 'auto';
+}
+
+function toggleSubmenu(event, el){
+    event.preventDefault();
+
+    const parent = el.parentElement;
+    parent.classList.toggle("active");
+}
+
+function startTyping(id, text, speed = 80){
+    const el = document.getElementById(id);
+    if(!el) return;
+
+    let i = 0;
+    el.innerHTML = "";
+
+    const interval = setInterval(()=>{
+        if(i < text.length){
+            el.innerHTML += text.charAt(i);
+            i++;
+        } else {
+            clearInterval(interval);
+        }
+    }, speed);
+}
+function renderPDFThumbnail() {
+    const url = "./academic-records.pdf";
+
+    const canvas = document.getElementById("pdfCanvas");
+    const ctx = canvas.getContext("2d");
+
+    pdfjsLib.getDocument(url).promise.then(pdf => {
+        return pdf.getPage(1);
+    }).then(page => {
+
+        requestAnimationFrame(() => {
+
+            const viewport = page.getViewport({ scale: 1.4 });
+
+            canvas.width = viewport.width;
+            canvas.height = viewport.height;
+
+            page.render({
+                canvasContext: ctx,
+                viewport: viewport
+            });
+
+        });
+
+    }).catch(err => {
+        console.error("PDF error:", err);
+    });
+}
+
+function renderLessonPlanPDF() {
+    const url = "./lesson-plan.pdf";
+
+    const canvas = document.getElementById("lessonPlanCanvas");
+    const ctx = canvas.getContext("2d");
+
+    pdfjsLib.getDocument(url).promise.then(pdf => {
+        return pdf.getPage(1);
+    }).then(page => {
+
+        const viewport = page.getViewport({ scale: 1.6 });
+
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+
+        return page.render({
+            canvasContext: ctx,
+            viewport: viewport
+        }).promise;
+
+    }).catch(err => {
+        console.error("Lesson plan PDF error:", err);
+    });
+}
+
+function imageClickEffect(el){
+    el.style.transform = "scale(1.2) rotate(3deg)";
+
+    setTimeout(()=>{
+        el.style.transform = "scale(1)";
+    },200);
+}
+startTyping("homeTyping", "My E-Portfolio");
+
+function revealOnScroll(){
+    const reveals = document.querySelectorAll('.reveal');
+
+    reveals.forEach(el=>{
+        const windowHeight = window.innerHeight;
+        const elementTop = el.getBoundingClientRect().top;
+
+        if(elementTop < windowHeight - 80){
+            el.classList.add('active');
+        }
+    });
+}
+
+window.addEventListener("load", function () {
+
+    const url = "./academic-records.pdf";
+
+    const canvas = document.getElementById("pdfCanvas");
+    const ctx = canvas.getContext("2d");
+
+    pdfjsLib.getDocument(url).promise.then(pdf => {
+        return pdf.getPage(1);
+    }).then(page => {
+
+        const viewport = page.getViewport({ scale: 1.5 });
+
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+
+        return page.render({
+            canvasContext: ctx,
+            viewport: viewport
+        }).promise;
+    }).catch(err => {
+        console.error("PDF load error:", err);
+    });
+
+});
+
+document.addEventListener("click", function(e){
+    if(!e.target.closest(".nav-group")){
+        document.querySelectorAll(".nav-group").forEach(g=>{
+            g.classList.remove("active");
+        });
+    }
+});
+
+function renderICTPDF() {
+    const url = "./ict-document.pdf";
+
+    const canvas = document.getElementById("ictCanvas");
+    const ctx = canvas.getContext("2d");
+
+    pdfjsLib.getDocument(url).promise.then(pdf => {
+        return pdf.getPage(1);
+    }).then(page => {
+
+        const viewport = page.getViewport({ scale: 1.5 });
+
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+
+        return page.render({
+            canvasContext: ctx,
+            viewport: viewport
+        }).promise;
+
+    }).catch(err => {
+        console.error("ICT PDF error:", err);
+    });
+}
+
+function renderReadingPDF() {
+    const url = "./reading-reflection.pdf";
+
+    const canvas = document.getElementById("readingCanvas");
+    const ctx = canvas.getContext("2d");
+
+    pdfjsLib.getDocument(url).promise.then(pdf => {
+        return pdf.getPage(1);
+    }).then(page => {
+
+        const viewport = page.getViewport({ scale: 1.5 });
+
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+
+        return page.render({
+            canvasContext: ctx,
+            viewport: viewport
+        }).promise;
+
+    }).catch(err => {
+        console.error("Reading PDF error:", err);
+    });
+}
+</script>
+
+</body>
+</html>
