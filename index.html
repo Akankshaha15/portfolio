@@ -1035,13 +1035,43 @@ canvas{
 
     <div class="submenu">
 
-        <a href="#" onclick="showSection('ict', this); return false;">
-            ICT
-        </a>
+        <!-- SAME ONE -->
+        <div class="nav-group">
 
-        <a href="#" onclick="showSection('reading', this); return false;">
-            Reading Reflection
-        </a>
+            <a href="#" onclick="toggleSubmenu(event, this); return false;">
+                 Semester 1 ▾
+            </a>
+
+            <div class="submenu">
+
+                <a href="#" onclick="showSection('ict', this); return false;">
+                    ICT
+                </a>
+
+                <a href="#" onclick="showSection('reading', this); return false;">
+                    Reading Reflection
+                </a>
+
+            </div>
+
+        </div>
+
+        <!-- SAME TWO -->
+        <div class="nav-group">
+
+            <a href="#" onclick="toggleSubmenu(event, this); return false;">
+                Semester 2 ▾
+            </a>
+
+            <div class="submenu">
+
+                <a href="#" onclick="showSection('ict2', this); return false;">
+                    ICT
+                </a>
+
+            </div>
+
+        </div>
 
     </div>
 </div>
@@ -1054,13 +1084,47 @@ canvas{
 
     <div class="submenu">
 
-        <a href="#" onclick="showSection('coursecode', this); return false;">
-            Course Code
-        </a>
+        <!-- SAME ONE -->
+        <div class="nav-group">
+
+            <a href="#" onclick="toggleSubmenu(event, this); return false;">
+                Semester 1 ▾
+            </a>
+
+            <div class="submenu">
+
+                <a href="#" onclick="showSection('coursecode', this); return false;">
+                    Course Code
+                </a>
+
+            </div>
+
+        </div>
+
+        <!-- SAME TWO -->
+        <div class="nav-group">
+
+            <a href="#" onclick="toggleSubmenu(event, this); return false;">
+                Semester 2 ▾
+            </a>
+
+            <div class="submenu">
+
+                <a href="#" onclick="showSection('coursecode2', this); return false;">
+                    Course Code
+                </a>
+
+            </div>
+
+        </div>
 
     </div>
 
 </div>
+
+<a href="#" onclick="showSection('internship', this); return false;">
+    Internship
+</a>
     <a href="#" onclick="showSection('gallery', this); return false;">
         Gallery
     </a>
@@ -1303,7 +1367,34 @@ canvas{
 
     </div>
 </div>
+<!-- ICT 2 -->
+<div id="ict2" class="section">
 
+    <div class="page-banner">
+        <span id="ict2Typing"></span>
+    </div>
+
+    <div class="academic-wrapper">
+
+        <p class="academic-subtitle">
+            This section presents additional ICT activities and digital teaching practices.
+        </p>
+
+        <div class="pdf-card-wrapper">
+
+            <canvas id="ict2Canvas"></canvas>
+
+            <div class="pdf-meta">
+                <div class="pdf-name">ict-document2.pdf</div>
+                <div class="pdf-sub">Tap to open</div>
+            </div>
+
+            <a href="ict-document2.pdf" target="_blank" class="pdf-click"></a>
+
+        </div>
+
+    </div>
+</div>
 <!-- READING -->
 <div id="reading" class="section">
     <div class="page-banner">
@@ -1373,6 +1464,91 @@ canvas{
     </div>
 
 </div>
+<!-- COURSE CODE 2 SECTION -->
+<div id="coursecode2" class="section">
+
+    <div class="page-banner">
+        <span id="course2Typing"></span>
+    </div>
+
+    <div class="academic-wrapper">
+
+        <div class="pdf-grid">
+            
+            <a href="pdf17.pdf" target="_blank" class="pdf-card">Bed 201</a>
+            <a href="pdf16.pdf" target="_blank" class="pdf-card">Bed 202</a>
+            <a href="pdf15.pdf" target="_blank" class="pdf-card">Bed 203</a>
+            <a href="pdf18.pdf" target="_blank" class="pdf-card">Bed 204</a>
+            <a href="pdf11.pdf" target="_blank" class="pdf-card">Bed 206-A</a>
+            <a href="pdf12.pdf" target="_blank" class="pdf-card">Bed 206-B</a>
+            <a href="pdf13.pdf" target="_blank" class="pdf-card">Bed 208-A</a>
+            <a href="pdf14.pdf" target="_blank" class="pdf-card">Bed 208-B</a>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- INTERNSHIP -->
+<div id="internship" class="section">
+
+    <div class="page-banner">
+        <span id="internshipTyping"></span>
+    </div>
+
+    <div class="academic-wrapper">
+
+        <p class="academic-subtitle">
+            This section showcases my internship experience, classroom engagement, and teaching journey through practical demonstrations.
+        </p>
+<h3>🎬 Internship Documentation </h3>
+
+      
+ <!-- PDF PREVIEW -->
+        <div class="pdf-card-wrapper">
+
+            <canvas id="lessonPlanCanvas"></canvas>
+
+            <div class="pdf-meta">
+                <div class="pdf-name">internship.pdf</div>
+                <div class="pdf-sub">Tap to open</div>
+            </div>
+
+            <a href="Collage-Bed2 05internship.pdf" target="_blank" class="pdf-click"></a>
+
+        </div>
+
+ <!-- VIDEO 1 -->
+        <div class="card micro-video-card">
+
+            <h3>🎬 Internship Activity 1</h3>
+
+            <div class="video-wrapper">
+                <video controls>
+                    <source src="internship-video1.mp4" type="video/mp4">
+                </video>
+            </div>
+
+        </div>
+
+        <!-- VIDEO 2 -->
+        <div class="card micro-video-card">
+
+            <h3>🎥 Internship Activity 2</h3>
+
+            <div class="video-wrapper">
+                <video controls>
+                    <source src="internship-video2.mp4" type="video/mp4">
+                </video>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 <!-- GALLERY -->
 <div id="gallery" class="section">
 
@@ -1400,8 +1576,22 @@ canvas{
         <img src="photo3.jpeg" onclick="openLightbox(this.src)">
         <img src="photo2.jpeg" onclick="openLightbox(this.src)">
         <img src="photo1.jpeg" onclick="openLightbox(this.src)">
+
+    </div>
+<!-- GALLERY PDF SECTION -->
+<div class="card" style="margin-top:25px;">
+
+    <h3 class="micro-gallery-title">Campus glimpses</h3>
+
+    <div class="pdf-grid">
+
+        <a href="gallery-pdf.pdf" target="_blank" class="pdf-card">
+           Memorable Photos
+        </a>
+
     </div>
 
+</div>
 </div>
 
 <!-- CONTACT -->
@@ -1477,7 +1667,21 @@ if(id === 'coursecode'){
 if(id === 'contact'){
     startTyping("contactTyping", "Contact Me");
 }
+if(id === 'ict2'){
+    startTyping("ict2Typing", "ICT Activities");
+    
+    setTimeout(() => {
+        renderICT2PDF();
+    }, 400);
+}
 
+if(id === 'coursecode2'){
+    startTyping("course2Typing", "Course Code");
+}
+
+if(id === 'internship'){
+    startTyping("internshipTyping", "Internship");
+}
 if(id === 'reading'){
     startTyping("readingTyping", "Reading Reflection");
 }
@@ -1694,7 +1898,30 @@ function renderICTPDF() {
         console.error("ICT PDF error:", err);
     });
 }
+function renderICT2PDF() {
+    const url = "./ict-document2.pdf";
 
+    const canvas = document.getElementById("ict2Canvas");
+    const ctx = canvas.getContext("2d");
+
+    pdfjsLib.getDocument(url).promise.then(pdf => {
+        return pdf.getPage(1);
+    }).then(page => {
+
+        const viewport = page.getViewport({ scale: 1.5 });
+
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+
+        return page.render({
+            canvasContext: ctx,
+            viewport: viewport
+        }).promise;
+
+    }).catch(err => {
+        console.error("ICT2 PDF error:", err);
+    });
+}
 function renderReadingPDF() {
     const url = "./reading-reflection.pdf";
 
